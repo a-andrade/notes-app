@@ -39,5 +39,5 @@ document.querySelector('#search-text').addEventListener('input', (e) => {
 })
 
 document.querySelector('#filter-by').addEventListener('change', (e) => {
-    
+
 })
