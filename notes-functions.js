@@ -9,6 +9,17 @@ const getSavedNotes = () => {
     }
 }
 
+// remove a note from the list
+const removeNote = (id) => {
+    const noteIndex = notes.findIndex((note) => {
+        return note.id === id
+    })
+
+    if (noteIndex > -1) {
+        notes.splice(noteIndex, 1)
+    }
+}
+
 // generate the DOM structure for a note
 const generateNoteDOM = (note) => {
     const noteElement = document.createElement('div')
@@ -18,6 +29,11 @@ const generateNoteDOM = (note) => {
     // setup the remove note button
     button.textContent = 'x'
     noteElement.appendChild(button)
+    button.addEventListener('click', () => {
+        removeNote(note.id)
+        saveNotes(notes)
+        renderNotes(notes, filters)
+    })
 
     // setup the note tile text
     if (note.title.length > 0) {
