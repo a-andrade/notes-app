@@ -8,11 +8,14 @@ renderNotes(notes, filters)
 
 document.querySelector('#create-note').addEventListener('click', (e) => {
     const id = uuidv4()
+    const timestamp = moment().valueOf()
 
     notes.push({
         id,
         title: "",
-        body: ""
+        body: "",
+        createdAt: timestamp,
+        updatedAt: timestamp
     })
 
     saveNotes(notes)
@@ -25,7 +28,7 @@ document.querySelector('#search-text').addEventListener('input', (e) => {
 })
 
 document.querySelector('#filter-by').addEventListener('change', (e) => {
-
+    // come back later
 })
 
 window.addEventListener('storage', (e) => {
