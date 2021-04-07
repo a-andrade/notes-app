@@ -7,14 +7,16 @@ const filters = {
 renderNotes(notes, filters)
 
 document.querySelector('#create-note').addEventListener('click', (e) => {
+    const id = uuidv4()
+
     notes.push({
-        id: uuidv4(),
+        id,
         title: "",
         body: ""
     })
 
     saveNotes(notes)
-    renderNotes(notes, filters)
+    location.assign(`edit-note.html#${id}`)
 })
 
 document.querySelector('#search-text').addEventListener('input', (e) => {
