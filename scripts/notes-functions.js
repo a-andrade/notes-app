@@ -28,18 +28,9 @@ const removeNote = (id) => {
 
 // generate the DOM structure for a note
 const generateNoteDOM = (note) => {
-    const noteElement = document.createElement('div')
-    const textElement = document.createElement('a')
-    const button = document.createElement('button')
-
-    // setup the remove note button
-    button.textContent = 'x'
-    noteElement.appendChild(button)
-    button.addEventListener('click', () => {
-        removeNote(note.id)
-        saveNotes(notes)
-        renderNotes(notes, filters)
-    })
+    const noteElement = document.createElement('a')
+    const textElement = document.createElement('p')
+    const statusElement = document.createElement('p')
 
     // setup the note tile text
     if (note.title.length > 0) {
@@ -47,8 +38,17 @@ const generateNoteDOM = (note) => {
     } else {
         textElement.textContent = 'Unnamed note'
     }
-    textElement.setAttribute('href', `edit-note.html#${note.id}`)
+    textElement.classList.add('list-item__title')
     noteElement.appendChild(textElement)
+
+    // setup link
+    noteElement.setAttribute('href', `edit-note.html#${note.id}`)
+    noteElement.classList.add('list-item')
+
+    // seup status message
+    statusElement.textContent = generateLastEdited(note.updatedAt)
+    statusElement.classList.add('list-item__subtitle')
+    noteElement.appendChild(statusElement)
 
     return noteElement
 }
@@ -92,18 +92,26 @@ const sortNotes = (notes, sortBy) => {
 
 // render application notes
 const renderNotes = (notes, filters) => {
+    const notesElement = document.querySelector('#notes')
     notes = sortNotes(notes, filters.sortBy)
 
     const filteredNotes = notes.filter((note) => {
         return note.title.toLowerCase().includes(filters.searchText.toLowerCase())
     })
 
-    document.querySelector('#notes').innerHTML = ''
+    notesElement.innerHTML = ''
 
-    filteredNotes.forEach((note) => {
-        const noteElement = generateNoteDOM(note)
-        document.querySelector('#notes').appendChild(noteElement)
-    })
+    if (filteredNotes.length > 0) {
+        filteredNotes.forEach((note) => {
+            const noteElement = generateNoteDOM(note)
+            notesElement.appendChild(noteElement)
+        })
+    } else {
+        const emptyMessage = document.createElement('p')
+        emptyMessage.textContent = "No notes to show..."
+        emptyMessage.classList.add('empty-message')
+        notesElement.appendChild(emptyMessage)
+    }
 }
 
 // save notes to local storage
